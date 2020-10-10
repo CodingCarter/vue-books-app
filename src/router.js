@@ -2,8 +2,11 @@ import { createRouter, createWebHistory } from "vue-router";
 
 import { formatSlug } from "@/utils/format-slug.js";
 
-import booksData from "@/data/books.yaml";
-const { books } = booksData;
+import { books as booksData } from "@/data/books.yaml";
+const books = booksData.map((book) => ({
+  ...book,
+  slug: formatSlug(book.title),
+}));
 
 const pages = {
   home: () => import("@/pages/Home.vue"),
@@ -23,7 +26,7 @@ const routes = [
     component: pages.books,
     props: { books },
     children: books.map((book) => ({
-      path: formatSlug(book.title),
+      path: book.slug,
       component: templates.book,
       props: book,
     })),
